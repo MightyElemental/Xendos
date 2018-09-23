@@ -40,12 +40,24 @@ public class ProgramLoader {
 	 */
 	public static synchronized void loadLib(String strPath) {
 		File path = new File(strPath);
+		loadLib(path);
+	}
+
+	/**
+	 * @author Emiflake
+	 * @since 23/09/2018
+	 * @param strPath
+	 *            - the path to a library to be loaded
+	 * 
+	 */
+	public static synchronized void loadLib(File path) {
 		try {
 			URL url = path.toURI().toURL();
 			URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
 			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
 			method.setAccessible(true);
 			method.invoke(classLoader, url);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
