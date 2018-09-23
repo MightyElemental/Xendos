@@ -1,9 +1,11 @@
 package net.mightyelemental.winGame.util;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 
 import net.mightyelemental.winGame.OSSettings;
@@ -25,6 +27,26 @@ public class ProgramLoader {
 			System.out.println("Successfully added [" + path + "]");
 		} catch (IOException | IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException
 				| IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * @author Emiflake
+	 * @since 23/09/2018
+	 * @param strPath
+	 *            - the path to a library to be loaded
+	 * 
+	 */
+	public static synchronized void loadLib(String strPath) {
+		File path = new File(strPath);
+		try {
+			URL url = path.toURI().toURL();
+			URLClassLoader classLoader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+			Method method = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
+			method.setAccessible(true);
+			method.invoke(classLoader, url);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
