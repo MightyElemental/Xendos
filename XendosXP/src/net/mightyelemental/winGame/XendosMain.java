@@ -58,11 +58,24 @@ public class XendosMain extends StateBasedGame {
 		registerProgram(AppHarmony.class, "Harmony");
 
 		File dir = new File("assets/programs");
-		System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
-		File[] files = dir.listFiles((d, name) -> name.endsWith(".jar"));
+		if ( dir.canRead() ) {
+			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+			File[] files = dir.listFiles((d, name) -> name.endsWith(".jar"));
 
-		for ( File f : files ) {
-			ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+			for ( File f : files ) {
+				ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+			}
+		} else {
+			Log.warn("Cannot read directory " + dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+			if ( !dir.exists() ) {
+				Log.info("Creating new folder " + dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+				boolean success = dir.mkdir();
+				if ( success ) {
+					Log.info("Successfully created folder");
+				} else {
+					Log.warn("Could not create new folder!");
+				}
+			}
 		}
 	}
 
