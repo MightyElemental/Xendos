@@ -29,6 +29,7 @@ public class XendosMain extends StateBasedGame {
 	public XendosMain() {
 		super("XendosXP");
 
+		loadLibraries();
 		loadPrograms();
 
 		this.addState(loadState);
@@ -66,15 +67,37 @@ public class XendosMain extends StateBasedGame {
 				ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			}
 		} else {
-			Log.warn("Cannot read directory " + dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
-			if ( !dir.exists() ) {
-				Log.info("Creating new folder " + dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
-				boolean success = dir.mkdir();
-				if ( success ) {
-					Log.info("Successfully created folder");
-				} else {
-					Log.warn("Could not create new folder!");
-				}
+			createProgramsDirectory(dir);
+		}
+	}
+
+	/**
+	 * @author Emiflake
+	 * @since 23/09/18
+	 */
+	private void loadLibraries() {
+		File dir = new File("assets/libraries");
+		if ( dir.canRead() ) {
+			//System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
+			File[] libraryJars = dir.listFiles((d, name) -> name.endsWith(".jar"));
+			for ( File f : libraryJars ) {
+				ProgramLoader.loadLib(f);
+			}
+		} else {
+			createProgramsDirectory(dir);
+		}
+	}
+
+	private void createProgramsDirectory(File dir) {
+		String path = dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", "");
+		Log.warn("Cannot read directory " + path);
+		if ( !dir.exists() ) {
+			Log.info("Creating new folder " + path);
+			boolean success = dir.mkdir();
+			if ( success ) {
+				Log.info("Successfully created folder");
+			} else {
+				Log.warn("Could not create new folder!");
 			}
 		}
 	}
