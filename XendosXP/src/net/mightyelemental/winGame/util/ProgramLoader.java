@@ -6,17 +6,19 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Arrays;
+
+import org.newdawn.slick.util.Log;
 
 import net.mightyelemental.winGame.OSSettings;
 
 public class ProgramLoader {
 
 	public static synchronized void loadJar(String path) {
+		String[] s = path.split("\\\\");
 		try {
 			JarFileLoader loader = new JarFileLoader(new URL[] {});
 			loader.addFile(path);
-			System.out.println("Found Jar: " + Arrays.asList(loader.getURLs()));
+			// System.out.println("Found Jar: " + Arrays.asList(loader.getURLs()));
 			// System.out.println(new
 			// File(loader.getURLs()[0].toString()).canRead()+"|"+loader.getURLs()[0].toString());
 			Class<?> c = Class.forName("Main", true, loader);
@@ -24,10 +26,11 @@ public class ProgramLoader {
 			method.setAccessible(true); /* promote the method to public access */
 			// System.out.println(Arrays.asList(method.getParameters()));
 			method.invoke(c.newInstance(), OSSettings.VERSION);
-			System.out.println("Successfully added [" + path + "]");
+			// System.out.println("Successfully added [" + path + "]");
+			Log.info("Successfully added " + s[s.length - 1]);
 		} catch (IOException | IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException
 				| IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			e.printStackTrace();
+			Log.error("Failed to add " + s[s.length - 1]);
 		}
 	}
 
