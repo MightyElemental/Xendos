@@ -38,25 +38,28 @@ public class AppTest extends AppWindow {
 		Color c = getRandomColor();
 		boolean banFlag = false;
 		g.setColor(c);
-		if ( true ) {
+		if (true) {
 			banFlag = true;
 		}
 		int i = rand.nextInt(200);
 		int y = rand.nextInt(150);
 		int count = 0;
-		for ( int x = 0; x < 50; x++ ) {
+		for (int x = 0; x < 50; x++) {
 			count++;
-			if ( count > 500000 ) {
-				this.setNotResponding(true);
+			if (count > 50000) {
+				reset();
+				// this.setNotResponding(true);
 				break;
 			}
 			i += rand.nextInt(3) - 1;
 			i = Math.abs(i);
 			y += rand.nextInt(3) - 1;
 			y = Math.abs(y);
-			if ( y > 150 ) y = 150;
-			if ( i > 200 ) i = 200;
-			if ( bannedPixels[i][y] ) {
+			if (y > 150)
+				y = 150;
+			if (i > 200)
+				i = 200;
+			if (bannedPixels[i][y]) {
 				x--;
 				continue;
 			}
@@ -74,12 +77,15 @@ public class AppTest extends AppWindow {
 		text += c;
 	}
 
+	public void reset() {
+		this.contentGraphics.clear();
+		this.bannedPixels = new boolean[201][151];
+	}
+
 	@Override
 	public void onComponentPressed(int button, GUIComponent c) {
-		if ( c.getUID().equals("#RESET") ) {
-			this.contentGraphics.clear();
-			this.bannedPixels = new boolean[201][151];
-		}
+		if (c.getUID().equals("#RESET"))
+			reset();
 	}
 
 }
