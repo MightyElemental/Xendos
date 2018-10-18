@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.Log;
@@ -27,8 +26,6 @@ public class XendosMain extends StateBasedGame {
 	public static Map<Class<? extends AppWindow>, String> programs = new HashMap<Class<? extends AppWindow>, String>();
 
 	public static final int WIDTH = 1280;
-
-	public static final Image NULL_IMAGE = null;
 
 	public static final int STATE_LOADING = 0;
 	public static final int STATE_LOGIN = 1;
