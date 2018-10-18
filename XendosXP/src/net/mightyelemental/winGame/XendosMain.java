@@ -44,17 +44,9 @@ public class XendosMain extends StateBasedGame {
 
 	public static final int WIDTH = 1280;
 
-<<<<<<< HEAD
 	public static final int STATE_LOADING = 0;
 	public static final int STATE_LOGIN = 1;
 	public static final int STATE_DESKTOP = 2;
-=======
-	public static final Image NULL_IMAGE = null;
-
-	public static final int	STATE_LOADING	= 0;
-	public static final int	STATE_LOGIN		= 1;
-	public static final int	STATE_DESKTOP	= 2;
->>>>>>> branch 'master' of https://github.com/MightyElemental/Xendos.git
 
 	public StateLoading	loadState		= new StateLoading(STATE_LOADING);
 	public StateLogin	loginState		= new StateLogin();
