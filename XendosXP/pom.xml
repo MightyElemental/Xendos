@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.mightyelemental.maven</groupId>
 	<artifactId>net.mightyelemental.xendos</artifactId>
-	<version>0.0.5</version>
+	<version>0.0.7</version>
 	<name>XendosXP</name>
 	<description>An emulated OS that does some stuff.</description>
 	<build>
@@ -24,7 +24,7 @@
 		<dependency>
 			<groupId>org.slick2d</groupId>
 			<artifactId>slick2d-core</artifactId>
-			<version>1.0.1</version>
+			<version>1.0.0</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.jcraft/jorbis -->
 		<dependency>
