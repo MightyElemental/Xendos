@@ -69,11 +69,10 @@ public class StateLoading extends BasicGameState {
 	public void renderLoadingBar(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		g.setColor(Color.blue);
 		int startX = 500;
-		g.fillRoundRect(startX + xPos, 530, 10, 15, 2);
+		g.fillRoundRect(startX + xPos, 530, 10, 15, 2);//adjust for scaling
 		g.fillRoundRect(startX - 14 + xPos, 530, 10, 15, 2);
 		g.fillRoundRect(startX - 28 + xPos, 530, 10, 15, 2);
 		loadingBar.draw(392, 527);
-		
 	}
 	
 	@Override
