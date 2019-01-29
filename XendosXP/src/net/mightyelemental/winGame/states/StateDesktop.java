@@ -13,6 +13,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import org.newdawn.slick.util.Log;
 
 import net.mightyelemental.winGame.OSSettings;
 import net.mightyelemental.winGame.ResourceLoader;
@@ -160,8 +161,30 @@ public class StateDesktop extends BasicGameState {
 				break;
 			}
 		}
-		if ( selectFlag ) {
-			selection = new Rectangle(this.oldx, this.oldy, newx - this.oldx, newy - this.oldy);
+		if ( selectFlag ) {// TODO: ensure main corner is top left
+			if ( newy - this.oldy < 0 ) {
+				if ( newx - this.oldx < 0 ) {
+					selection = new Rectangle(newx, newy, -newx + this.oldx, -newy + this.oldy);
+				} else {
+					selection = new Rectangle(this.oldx, newy, newx - this.oldx, -newy + this.oldy);
+				}
+			} else {
+				if ( newx - this.oldx < 0 ) {
+					selection = new Rectangle(newx, this.oldy, -newx + this.oldx, newy - this.oldy);
+				} else {
+					selection = new Rectangle(this.oldx, this.oldy, newx - this.oldx, newy - this.oldy);
+				}
+			}
+			Log.info(selection.getWidth() + "|" + selection.getHeight());
+		}
+		if ( selection != null ) {
+			for ( GUIComponent c : guiComponents ) {
+				if ( selection.intersects(c) ) {
+					c.setSelected(true);
+				} else {
+					c.setSelected(false);
+				}
+			}
 		}
 	}
 
@@ -225,6 +248,8 @@ public class StateDesktop extends BasicGameState {
 					}
 				}
 				c.onMousePressed(button);
+			} else {
+				c.setSelected(false);
 			}
 		}
 		for ( AppWindow aw : windowList ) {
