@@ -2,6 +2,7 @@ package net.mightyelemental.winGame.guiComponents;
 
 import java.io.IOException;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -35,17 +36,21 @@ public class GUIhtmlViewer extends GUIComponent {
 	private Image	page;
 	private boolean	loaded;
 	private String	fileName;
+	private Image	nullImg;
 
 	public GUIhtmlViewer(float width, float height, String uid, AppWindow aw) {
 		super(width, height, uid, aw);
+		nullImg = ResourceLoader.loadImage("webcache.null");
 	}
 
 	public void draw(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		super.draw(gc, sbg, g);
 		if ( page != null ) {
-			g.drawImage(page, x, y);
+			g.drawImage(page.getScaledCopy((int) width, (int) height), x, y);
 		} else if ( loaded ) {
 			page = ResourceLoader.loadImage("webcache/" + fileName);
+		} else {
+			g.drawImage(nullImg, (width - nullImg.getWidth()) / 2f, (height - nullImg.getHeight()) / 2f, new Color(0f,0f,0f,0.5f));
 		}
 	}
 
@@ -53,7 +58,7 @@ public class GUIhtmlViewer extends GUIComponent {
 		fileName = url.replaceAll("[^A-Za-z0-9]", "");
 		Log.info("Requesting URL - " + url);
 		loaded = false;
-		// page = ResourceLoader.loadImage("webcache/" + fileName);
+		page = ResourceLoader.loadImage("webcache/" + fileName);
 		new Thread() {
 			public void run() {
 				try {

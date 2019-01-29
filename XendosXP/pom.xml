@@ -57,71 +57,16 @@
 			<version>20160810</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.netty/netty-transport -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-transport</artifactId>
-			<version>4.1.22.Final</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.netty/netty-handler -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-			<version>4.1.22.Final</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/io.netty/netty-codec-http -->
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec-http</artifactId>
-			<version>4.1.22.Final</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.http-client/google-http-client -->
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client</artifactId>
-			<version>1.25.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>20.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-firestore -->
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-firestore</artifactId>
-			<version>0.61.0-beta</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.cloud/google-cloud-storage -->
-		<dependency>
-			<groupId>com.google.cloud</groupId>
-			<artifactId>google-cloud-storage</artifactId>
-			<version>1.43.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http -->
-		<dependency>
-			<groupId>com.google.auth</groupId>
-			<artifactId>google-auth-library-oauth2-http</artifactId>
-			<version>0.11.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client-gson -->
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client-gson</artifactId>
-			<version>1.25.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client -->
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.25.0</version>
-		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.google.api/api-common -->
-		<dependency>
-			<groupId>com.google.api</groupId>
-			<artifactId>api-common</artifactId>
-			<version>1.7.0</version>
-		</dependency>
 
 	</dependencies>
 </project>

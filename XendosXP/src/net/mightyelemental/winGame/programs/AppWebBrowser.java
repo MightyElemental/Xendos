@@ -37,10 +37,10 @@ public class AppWebBrowser extends AppWindow {
 		height = 1000 / 16f * 9f;
 		width = 1000;
 		text = new GUITextBox(width - 34, 20, "#URL_BAR");
-		this.addGUIObject(text, 5, 5);
-		this.addGUIObject(new GUIButton(20, 20, "#go", this).setText("->").setColor(Color.green), width - 25, 5);
-		panel = new GUIhtmlViewer(width - 10, height - 85, "Panel", this);
-		this.addGUIObject(panel, 5, 50);
+		this.addGUIObject(text, 3, 5);
+		this.addGUIObject(new GUIButton(20, 20, "#go", this).setText("->").setColor(Color.green), width - 27, 5);
+		panel = new GUIhtmlViewer(width - 10, height - 62, "Panel", this);
+		this.addGUIObject(panel, 3, 30);
 	}
 
 	@Override
