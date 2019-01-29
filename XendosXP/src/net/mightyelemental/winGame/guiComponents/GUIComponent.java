@@ -37,7 +37,7 @@ public class GUIComponent extends Rectangle {
 
 	private AppWindow linkedWindow;
 
-	private Shape selectedShape;
+	protected Shape selectedShape;
 
 	private long lastClicked = 0;
 

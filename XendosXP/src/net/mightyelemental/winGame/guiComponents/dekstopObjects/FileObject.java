@@ -3,10 +3,12 @@ package net.mightyelemental.winGame.guiComponents.dekstopObjects;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import net.mightyelemental.winGame.OSSettings;
+import net.mightyelemental.winGame.ResourceLoader;
 import net.mightyelemental.winGame.guiComponents.GUIComponent;
 
 /**
@@ -31,24 +33,53 @@ public class FileObject extends GUIComponent {
 
 	private String title;
 
+	private Image icon;
+
+	public FileType type;
+
 	private Class<?> linkedClass;
 
-	public FileObject(float x, float y, String uid, String title) {
-		super(x, y, OSSettings.FILE_DISPLAY_SIZE, OSSettings.FILE_DISPLAY_SIZE, uid);
+	public FileObject(float x, float y, FileType ft, String title) {
+		super(x, y, OSSettings.FILE_DISPLAY_SIZE, OSSettings.FILE_DISPLAY_SIZE, System.currentTimeMillis() + "_" + title);
 		this.title = title;
+		this.type = ft;
+		if ( type.equals(FileType.Program) ) {
+			icon = ResourceLoader.loadImage("!!.assets.programs." + title.toLowerCase() + ".icon");
+		}
+		if ( icon.equals(ResourceLoader.getNullImage()) ) {
+			icon = ResourceLoader.loadImage("desktop.defaultProgram");
+		}
+		if ( icon.equals(ResourceLoader.getNullImage()) ) {
+			icon = null;
+		}
 		this.setTransparent(false);
 	}
 
 	@Override
 	public void draw(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		super.draw(gc, sbg, g);
-		if (OSSettings.FILE_FONT != null) {
+		// super.draw(gc, sbg, g);
+		if ( OSSettings.FILE_FONT != null ) {
 			g.setFont(OSSettings.FILE_FONT);
 		}
+		if ( icon != null ) {
+			g.drawImage(icon.getScaledCopy((int) width, (int) height), x, y);
+		} else {
+			g.setColor(color);
+			g.fillRoundRect(x, y, width, height, 3);
+		}
+
 		String tempText = getTitle();
 		g.setColor(Color.black);
 		g.drawString(tempText, x + (width / 2) - OSSettings.FILE_FONT.getWidth(tempText) / 2, y + height);
 		g.setFont(OSSettings.NORMAL_FONT);
+
+		if ( this.isSelected() ) {
+			if ( selectedShape == null ) {
+				g.drawRoundRect(x, y, width, height, 3);
+			} else {
+				g.draw(selectedShape);
+			}
+		}
 	}
 
 	public String getTitle() {

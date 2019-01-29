@@ -25,9 +25,9 @@ import org.newdawn.slick.util.Log;
  */
 public class ResourceLoader {
 
-	private static Map<String, Image> imageLoads = new HashMap<String, Image>();
-	private static Map<String, Sound> soundLoads = new HashMap<String, Sound>();
-	private static Map<String, Music> musicLoads = new HashMap<String, Music>();
+	private static Map<String, Image>	imageLoads	= new HashMap<String, Image>();
+	private static Map<String, Sound>	soundLoads	= new HashMap<String, Sound>();
+	private static Map<String, Music>	musicLoads	= new HashMap<String, Music>();
 
 	/** Prevents instantiation */
 	private ResourceLoader() {
@@ -43,26 +43,28 @@ public class ResourceLoader {
 	 */
 	public static Image loadImage(String imagePath) {
 
-		if (!imageLoads.containsKey("null")) {
+		if ( !imageLoads.containsKey("null") ) {
 			loadNullImage();
 		}
 
 		Image loadedImage = imageLoads.get("null");
 
-		if (imagePath.equals("null")) {
-			return loadedImage;
-		}
+		if ( imagePath.equals("null") ) { return loadedImage; }
 
 		String location = imagePath.replaceAll("[.]", "/");
 		location += ".png";
-		location = "./assets/textures/" + location;
-		if (imageLoads.get(location) != null) {
+		if ( location.startsWith("!!") ) {
+			location = location.replaceFirst("!!", ".");
+		} else {
+			location = "./assets/textures/" + location;
+		}
+		if ( imageLoads.containsKey(location) ) {
 			return imageLoads.get(location);
 		} else {
 			try {
 				// loadedImage = new Image(location);
 				File temp = new File(location);
-				if (temp.exists()) {
+				if ( temp.exists() ) {
 					loadedImage = new Image(location);
 					System.out.println("Added texture\t'" + location + "'");
 				} else {
@@ -79,13 +81,20 @@ public class ResourceLoader {
 
 	public static void loadNullImage() {
 		try {
-			imageLoads.put("null", ResourceLoader.getNullImage());
+			imageLoads.put("null", ResourceLoader.generateNullImage());
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static Image getNullImage() throws SlickException {
+	public static Image getNullImage() {
+		if ( !imageLoads.containsKey("null") ) {
+			loadNullImage();
+		}
+		return imageLoads.get("null");
+	}
+
+	public static Image generateNullImage() throws SlickException {
 		Image nul = new Image(2, 2);
 		Graphics g = nul.getGraphics();
 		g.setColor(Color.red);
@@ -114,13 +123,13 @@ public class ResourceLoader {
 		String location = musicPath.replaceAll("[.]", "/");
 		location += ".ogg";
 		location = "./assets/sounds/music/" + location;
-		if (imageLoads.get(location) != null) {
+		if ( imageLoads.get(location) != null ) {
 			return musicLoads.get(location);
 		} else {
 			try {
 
 				File temp = new File(this.getClass().getClassLoader().getResource(location).toURI());
-				if (temp.exists()) {
+				if ( temp.exists() ) {
 					loadedMusic = new Music(this.getClass().getClassLoader().getResourceAsStream(location), location);
 					System.out.println("Added music\t'" + location + "'");
 				} else {
@@ -150,12 +159,12 @@ public class ResourceLoader {
 		String location = soundPath.replaceAll("[.]", "/");
 		location += ".ogg";
 		location = "./assets/sounds/" + location;
-		if (imageLoads.containsKey(location)) {
+		if ( imageLoads.containsKey(location) ) {
 			return soundLoads.get(location);
 		} else {
 			try {
 				File temp = new File(location);
-				if (temp.exists()) {
+				if ( temp.exists() ) {
 					loadedSound = new Sound(location);
 					System.out.println("Added sound\t'" + location + "'");
 				} else {
@@ -176,8 +185,7 @@ public class ResourceLoader {
 		try {
 			Font f = Font
 					.createFont(Font.TRUETYPE_FONT,
-							org.newdawn.slick.util.ResourceLoader
-									.getResourceAsStream("assets/fonts/" + fontPath + ".ttf"))
+							org.newdawn.slick.util.ResourceLoader.getResourceAsStream("assets/fonts/" + fontPath + ".ttf"))
 					.deriveFont(Font.PLAIN, size);
 			font = new UnicodeFont(f);
 			font.addAsciiGlyphs();

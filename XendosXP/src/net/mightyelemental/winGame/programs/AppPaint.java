@@ -1,8 +1,12 @@
 package net.mightyelemental.winGame.programs;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 
 import net.mightyelemental.winGame.XendosMain;
@@ -15,11 +19,14 @@ public class AppPaint extends AppWindow {
 
 	private static final long serialVersionUID = 2908623746541495832L;
 
-	private Color[] colorList = { Color.black, Color.blue, Color.gray, Color.green, Color.magenta, Color.orange,
-			Color.pink, Color.red, Color.yellow, Color.white };
+	private Color[] colorList = { Color.black, Color.blue, Color.gray, Color.green, Color.magenta, Color.orange, Color.pink,
+			Color.red, Color.yellow, Color.white };
 
-	private Image drawArea;
-	private Graphics drawGraphics;
+	private Set<Integer> keyToggles = new HashSet<Integer>();
+
+	private Image		undo;
+	private Image		drawArea;
+	private Graphics	drawGraphics;
 
 	private int colorPointer = 0;
 
@@ -43,10 +50,8 @@ public class AppPaint extends AppWindow {
 
 		try {
 			drawArea = new Image((int) getWidth(), (int) getHeight() - 40);
-			drawGraphics = drawArea.getGraphics();
-			drawGraphics.setColor(Color.lightGray);
-			drawGraphics.fillRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
-			drawGraphics.flush();
+			undo = new Image(drawArea.getWidth(), drawArea.getHeight());
+			clearDrawing();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -66,21 +71,14 @@ public class AppPaint extends AppWindow {
 
 	@Override
 	public void onComponentPressed(int button, GUIComponent c) {
-		if (c.getUID().equals("#CLEAR")) {
-			try {
-				drawGraphics = drawArea.getGraphics();
-				drawGraphics.setColor(Color.lightGray);
-				drawGraphics.fillRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
-				drawGraphics.flush();
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
+		if ( c.getUID().equals("#CLEAR") ) {
+			clearDrawing();
 		}
-		if (c.getUID().equals("#COL")) {
+		if ( c.getUID().equals("#COL") ) {
 			colorPointer++;
 			col.setColor(colorList[colorPointer % colorList.length]);
 		}
-		if (c.getUID().equals("#SET")) {
+		if ( c.getUID().equals("#SET") ) {
 			try {
 				XendosMain.desktopState.setBackground(drawArea);
 			} catch (SlickException e) {
@@ -89,15 +87,34 @@ public class AppPaint extends AppWindow {
 		}
 	}
 
+	private void clearDrawing() {
+		try {
+			drawGraphics = drawArea.getGraphics();
+			drawGraphics.setColor(Color.lightGray);
+			drawGraphics.fillRect(0, 0, drawArea.getWidth(), drawArea.getHeight());
+			drawGraphics.flush();
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@Override
 	public void mousePressed(int button, int x, int y) {
 		x = (int) (x - this.getX() - 3);
 		y = (int) (y - this.getY() - 70);
+		// try {
+		// drawGraphics = drawArea.getGraphics();
+		// drawGraphics.setColor(col.getColor());
+		// // drawGraphics.fillRect(x, y, 5, 5);
+		// drawGraphics.fillOval(x - 2.5f, y - 2.5f, 5, 5);
+		// drawGraphics.flush();
+		// } catch (SlickException e) {
+		// e.printStackTrace();
+		// }
 		try {
-			drawGraphics = drawArea.getGraphics();
-			drawGraphics.setColor(col.getColor());
-			drawGraphics.fillRect(x, y, 5, 5);
-			drawGraphics.flush();
+			Graphics g = undo.getGraphics();
+			g.drawImage(drawArea, 0, 0);
+			g.flush();
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
@@ -118,6 +135,27 @@ public class AppPaint extends AppWindow {
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void onKeyPressed(int key, char c) {
+		keyToggles.add(key);
+		System.out.println(keyToggles);
+		if ( keyToggles.contains(Input.KEY_LCONTROL) && keyToggles.contains(Input.KEY_Z) ) {
+			clearDrawing();
+			try {
+				drawGraphics = drawArea.getGraphics();
+				drawGraphics.drawImage(undo, 0, 0);
+				drawGraphics.flush();
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	@Override
+	public void keyReleased(int key, char c) {
+		keyToggles.remove(key);
 	}
 
 }
