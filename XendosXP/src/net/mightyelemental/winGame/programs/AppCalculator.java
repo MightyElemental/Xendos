@@ -37,8 +37,8 @@ public class AppCalculator extends AppWindow {
 
 	private double previousAnswer;
 
-	public static ScriptEngineManager manager = new ScriptEngineManager();
-	public static ScriptEngine engine = manager.getEngineByName("js");
+	public static ScriptEngineManager	manager	= new ScriptEngineManager();
+	public static ScriptEngine			engine	= manager.getEngineByName("js");
 
 	public AppCalculator(float x, float y, float width, float height) {
 		super(x, y, 400, 600, "Calculator");
@@ -54,8 +54,8 @@ public class AppCalculator extends AppWindow {
 		p.addGUIObject(new GUIButton(190, 20, "#exe", this).setText("EXE"), 0, 0);
 		p.addGUIObject(new GUIButton(0, 0, "#+", this).setText("+"), 0, 0);
 
-		for (int j = 0; j < 3; j++) {
-			for (int i = 0; i < 3; i++) {
+		for ( int j = 0; j < 3; j++ ) {
+			for ( int i = 0; i < 3; i++ ) {
 				int num = (3 - j) * 3 - 2 + i;
 				p.addGUIObject(new GUIButton(190, 20, "#num_" + num, this).setText("" + num), 0, 0);
 			}
@@ -83,22 +83,22 @@ public class AppCalculator extends AppWindow {
 	@Override
 	public void onComponentPressed(int button, GUIComponent c) {
 		String nid = c.getNID();
-		if (entryPan.getLatestEntry() == null) {
+		if ( entryPan.getLatestEntry() == null ) {
 			entryPan.addEntry("");
 		}
-		if (entryPan.getLatestEntry().isFinalized()) {
+		if ( entryPan.getLatestEntry().isFinalized() ) {
 			entryPan.addEntry("");
 		}
-		if (nid.startsWith("NUM_")) {
-			if (!(entryPan.getLatestEntry().getText().length() == 0 && nid.equals("NUM_0"))) {
+		if ( nid.startsWith("NUM_") ) {
+			if ( !(entryPan.getLatestEntry().getText().length() == 0 && nid.equals("NUM_0")) ) {
 				entryPan.getLatestEntry().getBuilder().append(nid.replaceFirst("NUM_", ""));
 			}
-		} else if (nid.equals("EXE")) {
+		} else if ( nid.equals("EXE") ) {
 			try {
 				String evalText = entryPan.getLatestEntry().getText();
 				evalText = evalText.replaceAll("ANS", previousAnswer + "");
 				Object o = engine.eval(evalText);
-				if (o != null) {
+				if ( o != null ) {
 					entryPan.getLatestEntry().setFinalized();
 					entryPan.addEntry(o.toString(), true, true);
 					previousAnswer = Double.parseDouble(o.toString());
@@ -108,15 +108,14 @@ public class AppCalculator extends AppWindow {
 				entryPan.addEntry("Invalid operation", true, true);
 				// e.printStackTrace();
 			}
-		} else if (nid.equals("DEL")) {
-			if (entryPan.getLatestEntry().getBuilder().length() > 0) {
-				entryPan.getLatestEntry().getBuilder()
-						.deleteCharAt(entryPan.getLatestEntry().getBuilder().length() - 1);
+		} else if ( nid.equals("DEL") ) {
+			if ( entryPan.getLatestEntry().getBuilder().length() > 0 ) {
+				entryPan.getLatestEntry().getBuilder().deleteCharAt(entryPan.getLatestEntry().getBuilder().length() - 1);
 			}
-		} else if (nid.equals("CLEAR")) {
+		} else if ( nid.equals("CLEAR") ) {
 			entryPan.clearEntries();
-		} else {
-			if (entryPan.getLatestEntry().getText().isEmpty()) {
+		} else if ( !nid.equals("DISPLAY") ) {
+			if ( entryPan.getLatestEntry().getText().isEmpty() ) {
 				entryPan.getLatestEntry().getBuilder().append("ANS");
 			}
 			entryPan.getLatestEntry().getBuilder().append(nid);
