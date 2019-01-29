@@ -73,7 +73,7 @@ public class GUIPanel extends GUIComponent {
 			int newY = (items) / gridCol;
 			// System.out.println(items + "|" + newX + "|" + newY);
 			com.setWidth(width / (float) gridCol - 4);
-			com.setHeight(height / (float) gridRow - 4);
+			com.setHeight(height / (float) gridRow - 6);
 			com.setX(newX * (width / (float) gridCol) + this.getX() + 2);
 			com.setY(newY * (height / (float) gridRow) + this.getY() + 2);
 			guiObjects.add(com);

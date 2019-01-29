@@ -46,6 +46,10 @@ public class GUIComponent extends Rectangle {
 		return this;
 	}
 
+	public Color getColor() {
+		return color;
+	}
+
 	public GUIComponent setTransparent(boolean t) {
 		this.transparent = t;
 		return this;

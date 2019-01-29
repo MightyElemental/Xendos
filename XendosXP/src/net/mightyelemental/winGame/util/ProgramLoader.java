@@ -46,7 +46,7 @@ public class ProgramLoader {
 			Log.info("Successfully added " + s[s.length - 1]);
 		} catch (IOException | IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException
 				| IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			Log.error("Failed to add " + s[s.length - 1]);
+			Log.error("Failed to add " + s[s.length - 1], e);
 		}
 	}
 

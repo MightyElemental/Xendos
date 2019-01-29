@@ -12,7 +12,7 @@ import org.newdawn.slick.util.Log;
 
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
 import net.mightyelemental.winGame.programs.AppCalculator;
-import net.mightyelemental.winGame.programs.AppHarmony;
+import net.mightyelemental.winGame.programs.AppPaint;
 import net.mightyelemental.winGame.programs.AppSquareRotator;
 import net.mightyelemental.winGame.programs.AppTest;
 import net.mightyelemental.winGame.programs.AppWebBrowser;
@@ -48,9 +48,9 @@ public class XendosMain extends StateBasedGame {
 	public static final int STATE_LOGIN = 1;
 	public static final int STATE_DESKTOP = 2;
 
-	public StateLoading	loadState		= new StateLoading(STATE_LOADING);
-	public StateLogin	loginState		= new StateLogin();
-	public StateDesktop	desktopState	= new StateDesktop();
+	public StateLoading loadState = new StateLoading(STATE_LOADING);
+	public StateLogin loginState = new StateLogin();
+	public static StateDesktop desktopState = new StateDesktop();
 
 	/**
 	 * Set up the program</br>
@@ -84,17 +84,19 @@ public class XendosMain extends StateBasedGame {
 	/** Registers interior and external programs. */
 	private void loadPrograms() {
 		registerProgram(AppWebBrowser.class, "Corner");
-		registerProgram(AppTest.class, "Test");
+		registerProgram(AppTest.class, "Splatter");
 		registerProgram(AppSquareRotator.class, "Cube Game");
 		registerProgram(AppCalculator.class, "Calculator");
-		registerProgram(AppHarmony.class, "Harmony");
+		registerProgram(AppPaint.class, "XenPaint");
+		//registerProgram(AppHarmony.class, "Harmony");
+		//registerProgram(AppSomething.class, "Component Test");
 
 		File dir = new File("assets/programs");
-		if ( dir.canRead() ) {
+		if (dir.canRead()) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			File[] files = dir.listFiles((d, name) -> name.endsWith(".jar"));
 
-			for ( File f : files ) {
+			for (File f : files) {
 				ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			}
 		} else {
@@ -110,10 +112,10 @@ public class XendosMain extends StateBasedGame {
 	 */
 	private void loadLibraries() {
 		File dir = new File("assets/libraries");
-		if ( dir.canRead() ) {
+		if (dir.canRead()) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			File[] libraryJars = dir.listFiles((d, name) -> name.endsWith(".jar"));
-			for ( File f : libraryJars ) {
+			for (File f : libraryJars) {
 				ProgramLoader.loadLib(f);
 			}
 		} else {
@@ -129,10 +131,10 @@ public class XendosMain extends StateBasedGame {
 	private void createProgramsDirectory(File dir) {
 		String path = dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", "");
 		Log.warn("Cannot read directory " + path);
-		if ( !dir.exists() ) {
+		if (!dir.exists()) {
 			Log.info("Creating new folder " + path);
 			boolean success = dir.mkdir();
-			if ( success ) {
+			if (success) {
 				Log.info("Successfully created folder");
 			} else {
 				Log.warn("Could not create new folder!");
@@ -146,9 +148,9 @@ public class XendosMain extends StateBasedGame {
 		Log.info("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
 		Log.info("Java Version: " + System.getProperty("java.version"));
 		String path = "windows";
-		if ( os.contains("mac") ) {
+		if (os.contains("mac")) {
 			path = "macosx";
-		} else if ( os.contains("nix") || os.contains("nux") || os.contains("aix") ) {
+		} else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
 			path = "linux";
 		}
 		String fullPath = new File("lib/natives/" + path).getAbsolutePath();
@@ -185,9 +187,9 @@ public class XendosMain extends StateBasedGame {
 	 * Used to register a program in Xendos
 	 * 
 	 * @param c
-	 *            - the class of the program which extends AppWindow
+	 * - the class of the program which extends AppWindow
 	 * @param name
-	 *            - the name of the program to be displayed
+	 * - the name of the program to be displayed
 	 */
 	public static void registerProgram(Class<? extends AppWindow> c, String name) {
 		programs.put(c, name);

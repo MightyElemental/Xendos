@@ -87,7 +87,7 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 		this.displayTitle = title;
 		this.baseTitle = title;
 		try {
-			content = new Image((int) (width - 3), (int) height - 28);
+			content = new Image((int) (width - 4), (int) height - 28);
 			contentGraphics = content.getGraphics();
 		} catch (SlickException e) {
 			e.printStackTrace();
@@ -252,9 +252,13 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 	 */
 	public abstract void updateContent(int delta);
 
-	public void mouseDragged(int x, int y) {
+	public void windowDragged(int x, int y) {
 		this.changeXBy(x);
 		this.changeYBy(y);
+	}
+	
+	public void mouseDragged(int oldX, int oldY, int newX, int newY) {
+		
 	}
 
 	public void onMouseReleased(int button) {
@@ -266,6 +270,7 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 	 * pressed
 	 */
 	public final boolean onMousePressed(int button, int x, int y) {
+		mousePressed(button, x, y);
 		boolean flag = false;
 		if (isMinimised)
 			return false;
@@ -295,6 +300,10 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 		}
 
 		return flag;
+
+	}
+
+	public void mousePressed(int button, int x, int y) {
 
 	}
 

@@ -107,11 +107,8 @@ public class StateLogin extends BasicGameState {
 		if ( c.getUID().equals("#GO") && button == 0 ) {
 			if ( ((GUITextBox) guiComponents.get(1)).getText().equals("password") ) {
 				System.out.println("GO!");
-				((GUITextBox) guiComponents.get(1)).setText("Correct!");
+				//((GUITextBox) guiComponents.get(1)).setText("Correct!");
 				showWelcome = true;
-			} else {
-				System.out.println("NO!");
-				((GUITextBox) guiComponents.get(1)).setText("Wrong Password!");
 			}
 		}
 	}
