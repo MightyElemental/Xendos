@@ -24,5 +24,3 @@ hs_err_pid*
 
 # For weird project root issues
 .idea/
-assets/
-lib/
