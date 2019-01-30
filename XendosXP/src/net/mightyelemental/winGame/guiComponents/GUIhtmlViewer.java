@@ -35,6 +35,8 @@ public class GUIhtmlViewer extends GUIComponent {
 
 	private Image	page;
 	private boolean	loaded;
+	private boolean	couldNotResolve;
+
 	private String	fileName;
 	private Image	nullImg;
 
@@ -48,29 +50,49 @@ public class GUIhtmlViewer extends GUIComponent {
 		if ( page != null ) {
 			g.drawImage(page.getScaledCopy((int) width, (int) height), x, y);
 		} else if ( loaded ) {
-			page = ResourceLoader.loadImage("webcache/" + fileName);
+			if ( ResourceLoader.imageExists("webcache/" + fileName) ) {
+				page = ResourceLoader.loadImage("webcache/" + fileName);
+				couldNotResolve = false;
+			} else {
+				loaded = false;
+				couldNotResolve = true;
+			}
 		} else {
-			g.drawImage(nullImg, (width - nullImg.getWidth()) / 2f, (height - nullImg.getHeight()) / 2f, new Color(0f,0f,0f,0.5f));
+			g.drawImage(nullImg, (width - nullImg.getWidth()) / 2f, (height - nullImg.getHeight()) / 2f,
+					new Color(0f, 0f, 0f, 0.5f));
+		}
+		if ( couldNotResolve ) {
+			g.drawString("Could not resolve webpage.\nEnsure you have typed the URL correctly.", 10, height - 15);
 		}
 	}
 
 	public void displayWebsite(String url) {
 		fileName = url.replaceAll("[^A-Za-z0-9]", "");
-		Log.info("Requesting URL - " + url);
 		loaded = false;
-		page = ResourceLoader.loadImage("webcache/" + fileName);
-		new Thread() {
-			public void run() {
-				try {
-					Process process = new ProcessBuilder("./lib/3rdparty/phantomjs.exe", "/lib/3rdparty/rasterize.js", url,
-							"./assets/textures/webcache/" + fileName + ".png", "1280*720px").start();
-					process.waitFor();
-					loaded = true;
-				} catch (IOException | InterruptedException e) {
-					e.printStackTrace();
+		couldNotResolve = false;
+		page = null;
+		if ( ResourceLoader.imageExists("webcache/" + fileName) ) {
+			loaded = true;
+			page = ResourceLoader.loadImage("webcache/" + fileName);
+		} else {
+			new Thread() {
+				public void run() {
+					try {
+						Log.info("Requesting URL [" + url + "]");
+						Process process = new ProcessBuilder("./lib/3rdparty/phantomjs.exe", "/lib/3rdparty/rasterize.js", url,
+								"./assets/textures/webcache/" + fileName + ".png", "1280*720px").start();
+						process.waitFor();
+						Log.info("Loaded webpage [" + url + "]");
+						loaded = true;
+						if ( !ResourceLoader.imageExists("webcache/" + fileName) ) {
+							couldNotResolve = true;
+						}
+					} catch (IOException | InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		}.start();
+			}.start();
+		}
 	}
 
 }

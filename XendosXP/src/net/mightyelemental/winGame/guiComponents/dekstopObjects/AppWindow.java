@@ -267,7 +267,6 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 	}
 
 	public void onWindowReleased(int button) {
-		Thread.dumpStack();
 		canDrag = false;
 	}
 

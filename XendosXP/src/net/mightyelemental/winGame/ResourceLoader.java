@@ -51,13 +51,7 @@ public class ResourceLoader {
 
 		if ( imagePath.equals("null") ) { return loadedImage; }
 
-		String location = imagePath.replaceAll("[.]", "/");
-		location += ".png";
-		if ( location.startsWith("!!") ) {
-			location = location.replaceFirst("!!", ".");
-		} else {
-			location = "./assets/textures/" + location;
-		}
+		String location = formatPath(imagePath);
 		if ( imageLoads.containsKey(location) ) {
 			return imageLoads.get(location);
 		} else {
@@ -77,6 +71,23 @@ public class ResourceLoader {
 		}
 
 		return loadedImage;
+	}
+
+	private static String formatPath(String imagePath) {
+		String location = imagePath.replaceAll("[.]", "/");
+		location += ".png";
+		if ( location.startsWith("!!") ) {
+			location = location.replaceFirst("!!", ".");
+		} else {
+			location = "./assets/textures/" + location;
+		}
+		return location;
+	}
+
+	public static boolean imageExists(String imagePath) {
+		String location = formatPath(imagePath);
+		File temp = new File(location);
+		return temp.exists();
 	}
 
 	public static void loadNullImage() {
