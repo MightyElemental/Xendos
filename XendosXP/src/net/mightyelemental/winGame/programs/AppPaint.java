@@ -19,14 +19,16 @@ public class AppPaint extends AppWindow {
 
 	private static final long serialVersionUID = 2908623746541495832L;
 
-	private Color[] colorList = { Color.black, Color.blue, Color.gray, Color.green, Color.magenta, Color.orange, Color.pink,
-			Color.red, Color.yellow, Color.white };
+	private Color[] colorList = { Color.black, Color.blue, Color.gray, Color.green, Color.magenta, Color.orange,
+			Color.pink, Color.red, Color.yellow, Color.white };
 
 	private Set<Integer> keyToggles = new HashSet<Integer>();
 
-	private Image		undo;
-	private Image		drawArea;
-	private Graphics	drawGraphics;
+	private Image undo;
+	private Image drawArea;
+	private Graphics drawGraphics;
+
+	private int size = 5;
 
 	private int colorPointer = 0;
 
@@ -62,6 +64,8 @@ public class AppPaint extends AppWindow {
 	@Override
 	protected void drawContent(Graphics g, int width, int height) {
 		g.drawImage(drawArea, 0, 40);
+		g.setColor(Color.black);
+		g.drawOval(mousex - size / 2f, mousey - size / 2f, size, size);
 	}
 
 	@Override
@@ -71,14 +75,14 @@ public class AppPaint extends AppWindow {
 
 	@Override
 	public void onComponentPressed(int button, GUIComponent c) {
-		if ( c.getUID().equals("#CLEAR") ) {
+		if (c.getUID().equals("#CLEAR")) {
 			clearDrawing();
 		}
-		if ( c.getUID().equals("#COL") ) {
+		if (c.getUID().equals("#COL")) {
 			colorPointer++;
 			col.setColor(colorList[colorPointer % colorList.length]);
 		}
-		if ( c.getUID().equals("#SET") ) {
+		if (c.getUID().equals("#SET")) {
 			try {
 				XendosMain.desktopState.setBackground(drawArea);
 			} catch (SlickException e) {
@@ -129,7 +133,7 @@ public class AppPaint extends AppWindow {
 		try {
 			drawGraphics = drawArea.getGraphics();
 			drawGraphics.setColor(col.getColor());
-			drawGraphics.setLineWidth(5);
+			drawGraphics.setLineWidth(size);
 			drawGraphics.drawLine(oldX, oldY, newX, newY);
 			drawGraphics.flush();
 		} catch (SlickException e) {
@@ -140,8 +144,8 @@ public class AppPaint extends AppWindow {
 	@Override
 	public void onKeyPressed(int key, char c) {
 		keyToggles.add(key);
-		System.out.println(keyToggles);
-		if ( keyToggles.contains(Input.KEY_LCONTROL) && keyToggles.contains(Input.KEY_Z) ) {
+		//System.out.println(keyToggles);
+		if (keyToggles.contains(Input.KEY_LCONTROL) && keyToggles.contains(Input.KEY_Z)) {
 			clearDrawing();
 			try {
 				drawGraphics = drawArea.getGraphics();
@@ -156,6 +160,12 @@ public class AppPaint extends AppWindow {
 	@Override
 	public void keyReleased(int key, char c) {
 		keyToggles.remove(key);
+	}
+
+	@Override
+	public void mouseWheelMoved(int newValue) {
+		//	size += Math.signum(newValue);
+		super.mouseWheelMoved(newValue);
 	}
 
 }
