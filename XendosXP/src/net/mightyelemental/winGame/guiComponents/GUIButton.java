@@ -1,6 +1,5 @@
 package net.mightyelemental.winGame.guiComponents;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -8,7 +7,6 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import net.mightyelemental.winGame.OSSettings;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
-
 
 /**
  * XendosXP - A custom operating system that runs in a window Copyright (C) 2018
@@ -32,12 +30,14 @@ public class GUIButton extends GUIComponent {
 
 	private String text = "";
 
+	/** Use this constructor if the button will be used stand-alone */
 	public GUIButton(float x, float y, float width, float height, String uid) {
 		super(x, y, width, height, uid);
 		this.setTransparent(false);
 		this.setAllowInvertedColor(true);
 	}
 
+	/** Use this constructor if the button will be used within a window */
 	public GUIButton(float width, float height, String uid, AppWindow aw) {
 		this(0, 0, width, height, uid);
 		this.setLinkedWindow(aw);
@@ -52,7 +52,7 @@ public class GUIButton extends GUIComponent {
 		while (OSSettings.NORMAL_FONT.getWidth(tempText) >= width) {
 			tempText = tempText.substring(0, tempText.length() - 1);
 		}
-		if ( isSelected() ) {
+		if (isSelected()) {
 			g.setColor(color);
 		} else {
 			g.setColor(getInvertColor(color));
