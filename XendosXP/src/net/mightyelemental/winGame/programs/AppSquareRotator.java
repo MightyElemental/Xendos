@@ -160,9 +160,9 @@ public class AppSquareRotator extends AppWindow {
 			if (onGround) {
 				yLoc -= 1;
 				yVel = -2;
-				System.out.println("yes");
+				//System.out.println("yes");
 			}
-			System.out.println("asd");
+			//System.out.println("asd");
 		}
 	}
 
