@@ -428,8 +428,8 @@ public abstract class AppWindow extends RoundedRectangle implements Runnable {
 	}
 
 	public void setMousePos(int x, int y) {
-		this.mousex = (int) (x - this.getX() - 2);
-		this.mousey = (int) (y - this.getY() - 29);
+		this.mousex = (int) (x - this.getX() - 3);
+		this.mousey = (int) (y - this.getY() - 30);
 	}
 
 	public void mouseWheelMoved(int newValue) {

@@ -69,8 +69,8 @@ public class XendosMain extends StateBasedGame {
 		try {
 			appGc = new AppGameContainer(this);
 			appGc.setDisplayMode(WIDTH, (int) (WIDTH / 16.0 * 9.0), false);
-			appGc.setTargetFrameRate(120);
-			// appGc.setVSync(true);
+			//appGc.setTargetFrameRate(120);
+			appGc.setVSync(true);
 			appGc.setAlwaysRender(true);
 			appGc.setFullscreen(false);
 			appGc.setShowFPS(false);
