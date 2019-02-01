@@ -166,7 +166,7 @@ public class AppPaint extends AppWindow {
 			} else {
 				grad = (float) (oldY - newY) / (float) (oldX - newX);
 				float c = oldY - (oldX * grad);
-				for ( int x = minX; x <= maxX; x++ ) {
+				for ( float x = minX; x <= maxX; x += 0.5f ) {
 					float y = (x * grad + c);
 					drawGraphics.fillOval(x - size / 2f, y - size / 2f, size, size);
 				}
