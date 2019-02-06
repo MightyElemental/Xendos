@@ -201,7 +201,7 @@ public class ResourceLoader {
 			font = new UnicodeFont(f);
 			font.addAsciiGlyphs();
 			ColorEffect a = new ColorEffect();
-			a.setColor(java.awt.Color.black);
+			a.setColor(java.awt.Color.white);
 			font.getEffects().add(a);
 			font.loadGlyphs();
 		} catch (FontFormatException e) {
