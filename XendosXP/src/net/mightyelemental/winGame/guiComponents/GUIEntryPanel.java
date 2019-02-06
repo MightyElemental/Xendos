@@ -58,6 +58,7 @@ public class GUIEntryPanel extends GUIComponent {
 	}
 
 	public void addEntry(String text, boolean onRight, Color c) {
+		if ( text.length() == 0 ) return;
 		entries.add(new Entry(text, onRight, c));
 	}
 
@@ -73,7 +74,8 @@ public class GUIEntryPanel extends GUIComponent {
 		g.setFont(OSSettings.NORMAL_FONT);
 		int totalHeight = 0;
 		if ( entries.size() > 0 ) {
-			g.setColor(Color.black);
+			// g.setColor(Color.black);
+			g.setColor(this.getInvertColor(color));
 			// g.drawString(entries.size() + "", 0, 0);
 			for ( int i = entries.size() - 1; i >= 0; i-- ) {
 				Entry e = entries.get(i);
