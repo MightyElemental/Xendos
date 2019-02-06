@@ -2,6 +2,7 @@ package net.mightyelemental.winGame.programs;
 
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 
 import net.mightyelemental.winGame.guiComponents.GUIButton;
 import net.mightyelemental.winGame.guiComponents.GUIComponent;
@@ -56,14 +57,15 @@ public class AppWebBrowser extends AppWindow {
 
 	@Override
 	public void onKeyPressed(int key, char c) {
-
+		if ( key == Input.KEY_ENTER ) {
+			panel.displayWebsite(text.getText());
+		}
 	}
 
 	@Override
 	public void onComponentPressed(int button, GUIComponent c) {
 		if ( c.getUID().equals("#GO") ) {
 			panel.displayWebsite(text.getText());
-			text.clearText();
 		}
 	}
 

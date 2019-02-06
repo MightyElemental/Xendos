@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.RoundedRectangle;
@@ -107,7 +108,7 @@ public class StateLogin extends BasicGameState {
 		if ( c.getUID().equals("#GO") && button == 0 ) {
 			if ( ((GUITextBox) guiComponents.get(1)).getText().equals("password") ) {
 				System.out.println("GO!");
-				//((GUITextBox) guiComponents.get(1)).setText("Correct!");
+				// ((GUITextBox) guiComponents.get(1)).setText("Correct!");
 				showWelcome = true;
 			}
 		}
@@ -115,14 +116,18 @@ public class StateLogin extends BasicGameState {
 
 	@Override
 	public void mousePressed(int button, int x, int y) {
-		if ( startTime < 0 ) for ( GUIComponent c : guiComponents ) {
-			c.setSelected(false);
-			if ( c.contains(x, y) ) {
-				c.onMousePressed(button);
-				onComponentPressed(button, c);
-				selectedUID = c.getUID();
-				c.setSelected(true);
-				// System.out.println(selectedUID);
+		// System.out.println(button + "|" + x + "|" + y);
+		if ( startTime < 0 ) {
+			for ( GUIComponent c : guiComponents ) {
+				c.setSelected(false);
+				// System.out.println("testing...");
+				if ( c.contains(x, y) ) {
+					c.onMousePressed(button);
+					onComponentPressed(button, c);
+					selectedUID = c.getUID();
+					c.setSelected(true);
+					System.out.println(selectedUID);
+				}
 			}
 		}
 	}
@@ -139,6 +144,12 @@ public class StateLogin extends BasicGameState {
 		for ( GUIComponent g : guiComponents ) {
 			if ( g.getUID().equals(selectedUID) ) {
 				g.onKeyPressed(key, c);
+			}
+		}
+		if ( key == Input.KEY_ENTER ) {
+			if ( ((GUITextBox) guiComponents.get(1)).getText().equals("password") ) {
+				System.out.println("GO!");
+				showWelcome = true;
 			}
 		}
 	}
