@@ -356,7 +356,7 @@ public class StateDesktop extends BasicGameState {
 		// e.printStackTrace();
 		// }
 		// }
-		if ( key == Input.KEY_DELETE ) {
+		if ( key == Input.KEY_ESCAPE ) {
 			for ( AppWindow w : windowList ) {
 				deleteWindow(w);
 			}
