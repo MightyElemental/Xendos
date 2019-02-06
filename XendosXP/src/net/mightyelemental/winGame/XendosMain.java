@@ -1,6 +1,10 @@
 package net.mightyelemental.winGame;
 
+import java.awt.Desktop;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,13 +48,13 @@ public class XendosMain extends StateBasedGame {
 
 	public static final int WIDTH = 1280;
 
-	public static final int STATE_LOADING = 0;
-	public static final int STATE_LOGIN = 1;
-	public static final int STATE_DESKTOP = 2;
+	public static final int	STATE_LOADING	= 0;
+	public static final int	STATE_LOGIN		= 1;
+	public static final int	STATE_DESKTOP	= 2;
 
-	public StateLoading loadState = new StateLoading(STATE_LOADING);
-	public StateLogin loginState = new StateLogin();
-	public static StateDesktop desktopState = new StateDesktop();
+	public StateLoading			loadState		= new StateLoading(STATE_LOADING);
+	public StateLogin			loginState		= new StateLogin();
+	public static StateDesktop	desktopState	= new StateDesktop();
 
 	/**
 	 * Set up the program</br>
@@ -69,7 +73,7 @@ public class XendosMain extends StateBasedGame {
 		try {
 			appGc = new AppGameContainer(this);
 			appGc.setDisplayMode(WIDTH, (int) (WIDTH / 16.0 * 9.0), false);
-			//appGc.setTargetFrameRate(120);
+			// appGc.setTargetFrameRate(120);
 			appGc.setVSync(true);
 			appGc.setAlwaysRender(true);
 			appGc.setFullscreen(false);
@@ -88,15 +92,16 @@ public class XendosMain extends StateBasedGame {
 		registerProgram(AppSquareRotator.class, "Cube Game");
 		registerProgram(AppCalculator.class, "Calculator");
 		registerProgram(AppPaint.class, "XenPaint");
-		//registerProgram(AppHarmony.class, "Harmony");
-		//registerProgram(AppSomething.class, "Component Test");
+		// registerProgram(AppConsole.class, "Console");
+		// registerProgram(AppHarmony.class, "Harmony");
+		// registerProgram(AppSomething.class, "Component Test");
 
 		File dir = new File("assets/programs");
-		if (dir.canRead()) {
+		if ( dir.canRead() ) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			File[] files = dir.listFiles((d, name) -> name.endsWith(".jar"));
 
-			for (File f : files) {
+			for ( File f : files ) {
 				ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			}
 		} else {
@@ -112,10 +117,10 @@ public class XendosMain extends StateBasedGame {
 	 */
 	private void loadLibraries() {
 		File dir = new File("assets/libraries");
-		if (dir.canRead()) {
+		if ( dir.canRead() ) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			File[] libraryJars = dir.listFiles((d, name) -> name.endsWith(".jar"));
-			for (File f : libraryJars) {
+			for ( File f : libraryJars ) {
 				ProgramLoader.loadLib(f);
 			}
 		} else {
@@ -131,10 +136,10 @@ public class XendosMain extends StateBasedGame {
 	private void createProgramsDirectory(File dir) {
 		String path = dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", "");
 		Log.warn("Cannot read directory " + path);
-		if (!dir.exists()) {
+		if ( !dir.exists() ) {
 			Log.info("Creating new folder " + path);
 			boolean success = dir.mkdir();
-			if (success) {
+			if ( success ) {
 				Log.info("Successfully created folder");
 			} else {
 				Log.warn("Could not create new folder!");
@@ -148,9 +153,9 @@ public class XendosMain extends StateBasedGame {
 		Log.info("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
 		Log.info("Java Version: " + System.getProperty("java.version"));
 		String path = "windows";
-		if (os.contains("mac")) {
+		if ( os.contains("mac") ) {
 			path = "macosx";
-		} else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+		} else if ( os.contains("nix") || os.contains("nux") || os.contains("aix") ) {
 			path = "linux";
 		}
 		String fullPath = new File("lib/natives/" + path).getAbsolutePath();
@@ -180,19 +185,33 @@ public class XendosMain extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		this.enterState(STATE_DESKTOP);
+		this.enterState(STATE_LOADING);
 	}
 
 	/**
 	 * Used to register a program in Xendos
 	 * 
 	 * @param c
-	 * - the class of the program which extends AppWindow
+	 *            - the class of the program which extends AppWindow
 	 * @param name
-	 * - the name of the program to be displayed
+	 *            - the name of the program to be displayed
 	 */
 	public static void registerProgram(Class<? extends AppWindow> c, String name) {
 		programs.put(c, name);
+	}
+
+	@Override
+	public boolean closeRequested() {
+		if ( this.getCurrentStateID() == STATE_DESKTOP ) {
+			if ( Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) ) {
+				try {
+					Desktop.getDesktop().browse(new URI("https://goo.gl/forms/l29hoW5fPPg3GwpC2"));
+				} catch (IOException | URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return super.closeRequested();
 	}
 
 }
