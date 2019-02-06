@@ -33,7 +33,7 @@ public class GUIComponent extends Rectangle {
 	public Color color = Color.white;
 	private String UID;
 
-	private boolean selected, transparent = false, allowInvertColor = false;
+	protected boolean selected, transparent = false, allowInvertColor = false;
 
 	private AppWindow linkedWindow;
 

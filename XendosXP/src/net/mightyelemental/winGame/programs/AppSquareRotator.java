@@ -46,6 +46,7 @@ public class AppSquareRotator extends AppWindow {
 		// g.setAntiAlias(true);
 		this.clearScreen();
 		g.setFont(OSSettings.NORMAL_FONT);
+		g.setColor(Color.black);
 		g.drawString("This should be in comic sans....", 20, 20);
 		g.setColor(Color.white);
 		g.fill(transformedRect);

@@ -185,7 +185,7 @@ public class XendosMain extends StateBasedGame {
 
 	@Override
 	public void initStatesList(GameContainer gc) throws SlickException {
-		this.enterState(STATE_LOADING);
+		this.enterState(STATE_DESKTOP);
 	}
 
 	/**

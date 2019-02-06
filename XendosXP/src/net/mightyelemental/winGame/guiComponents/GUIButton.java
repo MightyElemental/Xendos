@@ -1,5 +1,6 @@
 package net.mightyelemental.winGame.guiComponents;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -52,10 +53,15 @@ public class GUIButton extends GUIComponent {
 		while (OSSettings.NORMAL_FONT.getWidth(tempText) >= width) {
 			tempText = tempText.substring(0, tempText.length() - 1);
 		}
-		if (isSelected()) {
-			g.setColor(color);
+		if ( isSelected() && this.allowInvertColor ) {
+			// g.setColor(color);
 		} else {
-			g.setColor(getInvertColor(color));
+			if ( this.getColor().equals(Color.black) ) {
+				g.setColor(Color.white);
+			} else {
+				g.setColor(Color.black);
+			}
+			// g.setColor(getInvertColor(color));
 		}
 		g.drawString(tempText, x + (width / 2f) - OSSettings.NORMAL_FONT.getWidth(tempText) / 2f,
 				y + (height / 2f) - OSSettings.NORMAL_FONT.getHeight(tempText) / 2f);
