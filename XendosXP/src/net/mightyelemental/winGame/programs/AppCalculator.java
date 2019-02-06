@@ -84,7 +84,7 @@ public class AppCalculator extends AppWindow {
 	public void onComponentPressed(int button, GUIComponent c) {
 		String nid = c.getNID();
 		if ( entryPan.getLatestEntry() == null ) {
-			entryPan.addEntry("");
+			entryPan.addEntry(" ");
 		}
 		if ( entryPan.getLatestEntry().isFinalized() ) {
 			entryPan.addEntry("");
