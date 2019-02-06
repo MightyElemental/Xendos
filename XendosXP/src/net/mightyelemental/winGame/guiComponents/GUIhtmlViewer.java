@@ -34,11 +34,13 @@ public class GUIhtmlViewer extends GUIComponent {
 	private static final long serialVersionUID = 3497817514161328855L;
 
 	private Image	page;
-	private boolean	loaded;
+	private boolean	loaded, loading;
 	private boolean	couldNotResolve;
 
 	private String	fileName;
 	private Image	nullImg;
+
+	private int tick;
 
 	public GUIhtmlViewer(float width, float height, String uid, AppWindow aw) {
 		super(width, height, uid, aw);
@@ -61,9 +63,31 @@ public class GUIhtmlViewer extends GUIComponent {
 			g.drawImage(nullImg, (width - nullImg.getWidth()) / 2f, (height - nullImg.getHeight()) / 2f,
 					new Color(0f, 0f, 0f, 0.5f));
 		}
+		g.setColor(Color.black);
 		if ( couldNotResolve ) {
 			g.drawString("Could not resolve webpage.\nEnsure you have typed the URL correctly.", 10, height - 15);
 		}
+		if ( !isLoaded() && !loading && !couldNotResolve ) {
+			g.drawString("Provide a URL to get started", x + 5, y + 5);
+		}
+		if ( loading ) {
+			animateLoading(g);
+			tick += 5;
+		} else {
+			tick = 0;
+		}
+	}
+
+	private void animateLoading(Graphics g) {
+		int oX = 20;
+		int oY = 20;
+		int scale = 7;
+		g.fillOval((float) (x + oX + scale * Math.sin(Math.toRadians(tick))),
+				(float) (y + oY + scale * Math.cos(Math.toRadians(tick))), 5, 5);
+		g.fillOval((float) (x + oX + scale * Math.sin(Math.toRadians(tick + 120))),
+				(float) (y + oY + scale * Math.cos(Math.toRadians(tick + 120))), 5, 5);
+		g.fillOval((float) (x + oX + scale * Math.sin(Math.toRadians(tick + 240))),
+				(float) (y + oY + scale * Math.cos(Math.toRadians(tick + 240))), 5, 5);
 	}
 
 	public void displayWebsite(String url) {
@@ -78,6 +102,7 @@ public class GUIhtmlViewer extends GUIComponent {
 			new Thread() {
 				public void run() {
 					try {
+						loading = true;
 						Log.info("Requesting URL [" + url + "]");
 						Process process = new ProcessBuilder("./lib/3rdparty/phantomjs.exe", "/lib/3rdparty/rasterize.js", url,
 								"./assets/textures/webcache/" + fileName + ".png", "1280*720px").start();
@@ -87,12 +112,21 @@ public class GUIhtmlViewer extends GUIComponent {
 						if ( !ResourceLoader.imageExists("webcache/" + fileName) ) {
 							couldNotResolve = true;
 						}
+						loading = false;
 					} catch (IOException | InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
 			}.start();
 		}
+	}
+
+	public boolean isLoaded() {
+		return loaded;
+	}
+
+	public boolean couldNotResolve() {
+		return couldNotResolve;
 	}
 
 }
