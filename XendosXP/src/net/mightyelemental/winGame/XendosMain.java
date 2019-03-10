@@ -16,6 +16,7 @@ import org.newdawn.slick.util.Log;
 
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
 import net.mightyelemental.winGame.programs.AppCalculator;
+import net.mightyelemental.winGame.programs.AppConsole;
 import net.mightyelemental.winGame.programs.AppPaint;
 import net.mightyelemental.winGame.programs.AppSquareRotator;
 import net.mightyelemental.winGame.programs.AppTest;
@@ -51,6 +52,8 @@ public class XendosMain extends StateBasedGame {
 	public static final int	STATE_LOADING	= 0;
 	public static final int	STATE_LOGIN		= 1;
 	public static final int	STATE_DESKTOP	= 2;
+
+	private static boolean review = false;
 
 	public StateLoading			loadState		= new StateLoading(STATE_LOADING);
 	public StateLogin			loginState		= new StateLogin();
@@ -92,7 +95,7 @@ public class XendosMain extends StateBasedGame {
 		registerProgram(AppSquareRotator.class, "Cube Game");
 		registerProgram(AppCalculator.class, "Calculator");
 		registerProgram(AppPaint.class, "XenPaint");
-		// registerProgram(AppConsole.class, "Console");
+		registerProgram(AppConsole.class, "Console");
 		// registerProgram(AppHarmony.class, "Harmony");
 		// registerProgram(AppSomething.class, "Component Test");
 
@@ -202,7 +205,7 @@ public class XendosMain extends StateBasedGame {
 
 	@Override
 	public boolean closeRequested() {
-		if ( this.getCurrentStateID() == STATE_DESKTOP ) {
+		if ( review && this.getCurrentStateID() == STATE_DESKTOP ) {
 			if ( Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) ) {
 				try {
 					Desktop.getDesktop().browse(new URI("https://goo.gl/forms/l29hoW5fPPg3GwpC2"));
