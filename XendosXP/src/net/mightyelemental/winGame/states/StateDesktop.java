@@ -24,6 +24,8 @@ import net.mightyelemental.winGame.guiComponents.dekstopObjects.FileObject;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.FileType;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.StartWindow;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.TaskbarApp;
+import net.mightyelemental.winGame.programs.AppPopupMessage;
+import net.mightyelemental.winGame.util.ErrorType;
 
 /**
  * XendosXP - A custom operating system that runs in a window Copyright (C) 2018
@@ -46,9 +48,10 @@ public class StateDesktop extends BasicGameState {
 	public StateDesktop() {
 	}
 
-	private List<GUIComponent>	guiComponents	= new ArrayList<GUIComponent>();
-	private List<AppWindow>		windowList		= new ArrayList<AppWindow>();
-	private List<String>		taskbarAppOrder	= new ArrayList<String>();
+	private List<GUIComponent>		guiComponents	= new ArrayList<GUIComponent>();
+	private List<AppWindow>			windowList		= new ArrayList<AppWindow>();
+	private List<String>			taskbarAppOrder	= new ArrayList<String>();
+	private List<AppPopupMessage>	popup			= new ArrayList<AppPopupMessage>();
 
 	private Image		background, taskbar;
 	private Rectangle	selection;
@@ -120,6 +123,8 @@ public class StateDesktop extends BasicGameState {
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		windowList.addAll(popup);
+		popup.clear();
 		updateWindows(gc, sbg, delta);
 	}
 
@@ -309,6 +314,10 @@ public class StateDesktop extends BasicGameState {
 		}
 	}
 
+	public void createNewPopup(String title, String content, ErrorType type) {
+		popup.add(new AppPopupMessage(title, content, type));
+	}
+
 	public void createNewWindow(int width, int height, Class<? extends AppWindow> c)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
@@ -317,6 +326,7 @@ public class StateDesktop extends BasicGameState {
 		// AppWindow wa = new AppSquareRotator(x, y, 800, 600);
 		AppWindow wa = c.getConstructor(new Class<?>[] { float.class, float.class, float.class, float.class }).newInstance(x, y,
 				width, height);
+		wa.setDesktop(this);
 		windowList.add(wa);
 		TaskbarApp t = new TaskbarApp(110, wa, taskbarAppOrder.size());
 		guiComponents.add(t);
@@ -325,10 +335,12 @@ public class StateDesktop extends BasicGameState {
 
 	public void deleteWindow(AppWindow aw) {
 		windowList.remove(aw);
-		taskbarAppOrder.remove(aw.getLinkedTaskbarApp().getUID());
-		for ( AppWindow a : windowList ) {
-			TaskbarApp t = a.getLinkedTaskbarApp();
-			t.setIndex(taskbarAppOrder.indexOf(t.getUID()));
+		if ( aw.getLinkedTaskbarApp() != null ) {
+			taskbarAppOrder.remove(aw.getLinkedTaskbarApp().getUID());
+			for ( AppWindow a : windowList ) {
+				TaskbarApp t = a.getLinkedTaskbarApp();
+				t.setIndex(taskbarAppOrder.indexOf(t.getUID()));
+			}
 		}
 	}
 
