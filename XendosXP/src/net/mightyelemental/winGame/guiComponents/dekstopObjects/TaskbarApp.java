@@ -30,8 +30,6 @@ public class TaskbarApp extends GUIButton {
 	private static final long	serialVersionUID	= 8086670225644581843L;
 	public static final String	TASKBARAPP			= "_taskbarapp";
 
-	// private int index = -1;
-
 	private final float startX;
 
 	public AppWindow linkedWindow;
@@ -45,7 +43,6 @@ public class TaskbarApp extends GUIButton {
 	}
 
 	public void setIndex(int index) {
-		// this.index = index;
 		float xOffset = index * (this.getWidth() + 2);
 		this.setX(startX + xOffset);
 	}

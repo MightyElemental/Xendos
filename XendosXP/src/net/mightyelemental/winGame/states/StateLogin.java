@@ -108,7 +108,6 @@ public class StateLogin extends BasicGameState {
 		if ( c.getUID().equals("#GO") && button == 0 ) {
 			if ( ((GUITextBox) guiComponents.get(1)).getText().equals("password") ) {
 				System.out.println("GO!");
-				// ((GUITextBox) guiComponents.get(1)).setText("Correct!");
 				showWelcome = true;
 			}
 		}
@@ -116,11 +115,9 @@ public class StateLogin extends BasicGameState {
 
 	@Override
 	public void mousePressed(int button, int x, int y) {
-		// System.out.println(button + "|" + x + "|" + y);
 		if ( startTime < 0 ) {
 			for ( GUIComponent c : guiComponents ) {
 				c.setSelected(false);
-				// System.out.println("testing...");
 				if ( c.contains(x, y) ) {
 					c.onMousePressed(button);
 					onComponentPressed(button, c);

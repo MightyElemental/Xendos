@@ -29,7 +29,6 @@ import net.mightyelemental.winGame.XendosMain;
  */
 public class StateLoading extends BasicGameState {
 	
-	
 	private int ID = 0;
 	
 	public StateLoading( int ID ) {
@@ -63,7 +62,6 @@ public class StateLoading extends BasicGameState {
 				g.fillRect(0, 0, gc.getWidth(), gc.getHeight());
 			}
 		}
-		
 	}
 	
 	public void renderLoadingBar(GameContainer gc, StateBasedGame sbg, Graphics g) {
