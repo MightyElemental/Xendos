@@ -27,21 +27,17 @@ import net.mightyelemental.winGame.states.StateLogin;
 import net.mightyelemental.winGame.util.ProgramLoader;
 
 /**
- * XendosXP - A custom operating system that runs in a window Copyright (C) 2018
- * James Burnell
+ * XendosXP - A custom operating system that runs in a window Copyright (C) 2018 James Burnell
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, either version 3 of the License, or (at your option) any later
+ * This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public
+ * License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later
  * version.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
  */
 public class XendosMain extends StateBasedGame {
 
@@ -53,11 +49,18 @@ public class XendosMain extends StateBasedGame {
 	public static final int	STATE_LOGIN		= 1;
 	public static final int	STATE_DESKTOP	= 2;
 
-	private static boolean review = false;
+	private static boolean REVIEW_MODE = false;
 
 	public StateLoading			loadState		= new StateLoading(STATE_LOADING);
-	public StateLogin			loginState		= new StateLogin();
+	public StateLogin				loginState		= new StateLogin();
 	public static StateDesktop	desktopState	= new StateDesktop();
+
+	public static void main( String[] args ) {
+		displayCopyright();
+		resetLib();
+		// ProgramLoader.loadJar("/test.jar");
+		new XendosMain();
+	}
 
 	/**
 	 * Set up the program</br>
@@ -100,11 +103,11 @@ public class XendosMain extends StateBasedGame {
 		// registerProgram(AppSomething.class, "Component Test");
 
 		File dir = new File("assets/programs");
-		if ( dir.canRead() ) {
+		if (dir.canRead()) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
-			File[] files = dir.listFiles((d, name) -> name.endsWith(".jar"));
+			File[] files = dir.listFiles(( d, name ) -> name.endsWith(".jar"));
 
-			for ( File f : files ) {
+			for (File f : files) {
 				ProgramLoader.loadJar(f.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
 			}
 		} else {
@@ -120,10 +123,10 @@ public class XendosMain extends StateBasedGame {
 	 */
 	private void loadLibraries() {
 		File dir = new File("assets/libraries");
-		if ( dir.canRead() ) {
+		if (dir.canRead()) {
 			// System.out.println(dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", ""));
-			File[] libraryJars = dir.listFiles((d, name) -> name.endsWith(".jar"));
-			for ( File f : libraryJars ) {
+			File[] libraryJars = dir.listFiles(( d, name ) -> name.endsWith(".jar"));
+			for (File f : libraryJars) {
 				ProgramLoader.loadLib(f);
 			}
 		} else {
@@ -133,16 +136,16 @@ public class XendosMain extends StateBasedGame {
 
 	/**
 	 * Creates a new directory in the event one does not exist.<br>
-	 * Tests if directory exists and attempts to create one in the even it does not
-	 * exist. It will notify the user what is happening.
+	 * Tests if directory exists and attempts to create one in the even it does not exist. It will notify the user what
+	 * is happening.
 	 */
-	private void createProgramsDirectory(File dir) {
+	private void createProgramsDirectory( File dir ) {
 		String path = dir.getAbsolutePath().replaceFirst("[A-Z]{1}:", "");
 		Log.warn("Cannot read directory " + path);
-		if ( !dir.exists() ) {
+		if (!dir.exists()) {
 			Log.info("Creating new folder " + path);
 			boolean success = dir.mkdir();
-			if ( success ) {
+			if (success) {
 				Log.info("Successfully created folder");
 			} else {
 				Log.warn("Could not create new folder!");
@@ -156,24 +159,18 @@ public class XendosMain extends StateBasedGame {
 		Log.info("OS: " + System.getProperty("os.name") + " (" + System.getProperty("os.arch") + ")");
 		Log.info("Java Version: " + System.getProperty("java.version"));
 		String path = "windows";
-		if ( os.contains("mac") ) {
+		if (os.contains("mac")) {
 			path = "macosx";
-		} else if ( os.contains("nix") || os.contains("nux") || os.contains("aix") ) {
+		} else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
 			path = "linux";
 		}
 		String fullPath = new File("lib/natives/" + path).getAbsolutePath();
+
 		System.setProperty("java.library.path", fullPath);
 		System.setProperty("net.java.games.input.librarypath", fullPath);
 		System.setProperty("org.lwjgl.librarypath", fullPath);
 		System.setProperty("net.java.games.input.DirectAndRawInputEnvironmentPlugin", fullPath);
 		// System.out.println(System.getProperty("org.lwjgl.librarypath"));
-	}
-
-	public static void main(String[] args) {
-		displayCopyright();
-		resetLib();
-		// ProgramLoader.loadJar("/test.jar");
-		new XendosMain();
 	}
 
 	private static void displayCopyright() {
@@ -187,26 +184,24 @@ public class XendosMain extends StateBasedGame {
 	}
 
 	@Override
-	public void initStatesList(GameContainer gc) throws SlickException {
+	public void initStatesList( GameContainer gc ) throws SlickException {
 		this.enterState(STATE_DESKTOP);
 	}
 
 	/**
 	 * Used to register a program in Xendos
 	 * 
-	 * @param c
-	 *            - the class of the program which extends AppWindow
-	 * @param name
-	 *            - the name of the program to be displayed
+	 * @param c - the class of the program which extends AppWindow
+	 * @param name - the name of the program to be displayed
 	 */
-	public static void registerProgram(Class<? extends AppWindow> c, String name) {
+	public static void registerProgram( Class<? extends AppWindow> c, String name ) {
 		programs.put(c, name);
 	}
 
 	@Override
 	public boolean closeRequested() {
-		if ( review && this.getCurrentStateID() == STATE_DESKTOP ) {
-			if ( Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE) ) {
+		if (REVIEW_MODE && this.getCurrentStateID() == STATE_DESKTOP) {
+			if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
 				try {
 					Desktop.getDesktop().browse(new URI("https://goo.gl/forms/l29hoW5fPPg3GwpC2"));
 				} catch (IOException | URISyntaxException e) {
