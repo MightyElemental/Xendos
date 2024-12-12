@@ -11,20 +11,19 @@ import org.newdawn.slick.state.StateBasedGame;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
 
 /**
- * XendosXP - A custom operating system that runs in a window Copyright (C) 2018
- * James Burnell
+ * XendosXP - A custom operating system that runs in a window Copyright (C) 2018 James
+ * Burnell
  * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU General Public License as published by the Free Software
- * Foundation, version 3 of the License.
+ * This program is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU General Public License as published by the Free Software Foundation, version
+ * 3 of the License.
  * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
- * details.
+ * This program is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE. See the GNU General Public License for more details.
  * 
- * You should have received a copy of the GNU General Public License along with
- * this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License along with this
+ * program. If not, see <http://www.gnu.org/licenses/>.
  */
 public class GUIComponent extends Rectangle {
 
@@ -69,7 +68,8 @@ public class GUIComponent extends Rectangle {
 		this.linkedWindow = aw;
 	}
 
-	public void draw(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+	public void draw(GameContainer gc, StateBasedGame sbg, Graphics g)
+			throws SlickException {
 
 		if (this.isSelected() && allowInvertColor) {
 			g.setColor(getInvertColor(color));
@@ -153,6 +153,52 @@ public class GUIComponent extends Rectangle {
 		int g = c.getGreen();
 		int b = c.getBlue();
 		return new Color(255 - r, 255 - g, 255 - b);
+	}
+
+	@Override
+	public void setBounds(Rectangle other) {
+		super.setBounds(other);
+		onResize();
+	}
+
+	@Override
+	public void setBounds(float x, float y, float width, float height) {
+		super.setBounds(x, y, width, height);
+		onResize();
+	}
+
+	@Override
+	public void setSize(float width, float height) {
+		super.setSize(width, height);
+		onResize();
+	}
+
+	@Override
+	public void grow(float h, float v) {
+		super.grow(h, v);
+		onResize();
+	}
+
+	@Override
+	public void scaleGrow(float h, float v) {
+		super.scaleGrow(h, v);
+		onResize();
+	}
+
+	@Override
+	public void setWidth(float width) {
+		super.setWidth(width);
+		onResize();
+	}
+
+	@Override
+	public void setHeight(float height) {
+		super.setHeight(height);
+		onResize();
+	}
+
+	public void onResize() {
+
 	}
 
 }

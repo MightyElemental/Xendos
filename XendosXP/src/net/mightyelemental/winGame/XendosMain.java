@@ -52,7 +52,7 @@ public class XendosMain extends StateBasedGame {
 	private static boolean REVIEW_MODE = false;
 
 	public StateLoading			loadState		= new StateLoading(STATE_LOADING);
-	public StateLogin				loginState		= new StateLogin();
+	public StateLogin			loginState		= new StateLogin();
 	public static StateDesktop	desktopState	= new StateDesktop();
 
 	public static void main( String[] args ) {
