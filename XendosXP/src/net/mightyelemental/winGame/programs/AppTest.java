@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import net.mightyelemental.winGame.guiComponents.GUIButton;
 import net.mightyelemental.winGame.guiComponents.GUIComponent;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
+import net.mightyelemental.winGame.states.StateDesktop;
 
 /**
  * XendosXP - A custom operating system that runs in a window Copyright (C) 2018 James Burnell
@@ -22,8 +23,6 @@ import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
  * <http://www.gnu.org/licenses/>.
  */
 public class AppTest extends AppWindow {
-
-    private static final long serialVersionUID = 2755214383757258719L;
 
     private Random rand = new Random(System.currentTimeMillis());
 
@@ -40,8 +39,8 @@ public class AppTest extends AppWindow {
 
     private boolean[][] bannedPixels = new boolean[201][151];
 
-    public AppTest(float x, float y, float width, float height) {
-        super(x, y, width, height, "Random Splatter Painter");
+    public AppTest(StateDesktop context, float x, float y, float width, float height) {
+        super(context, x, y, width, height, "Random Splatter Painter");
         this.setShowFPS(true);
         this.addGUIObject(new GUIButton(150, 30, "#reset", this).setText("Reset Screen"), 10, 100);
         this.lastReset = System.currentTimeMillis();

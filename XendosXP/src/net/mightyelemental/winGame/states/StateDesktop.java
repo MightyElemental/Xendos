@@ -63,7 +63,7 @@ public class StateDesktop extends BasicGameState {
 		background = ResourceLoader.loadImage("desktop.background-bliss");
 		taskbar = ResourceLoader.loadImage("desktop.taskbar");
 
-		startWin = new StartWindow();
+		startWin = new StartWindow(this);
 		guiComponents.add(new GUIComponent(0, gc.getHeight() - 43, 105, 43, "#START")
 				.setTransparent(true));
 
@@ -159,7 +159,7 @@ public class StateDesktop extends BasicGameState {
 	@Override
 	public void mouseDragged(int oldx, int oldy, int newx, int newy) {
 		boolean selectFlag = true;
-		windowList.forEach(e -> e.setMousePos(newx, newy));
+		windowList.forEach(e -> e.updateLocalMousePos(newx, newy));
 		for (int i = windowList.size() - 1; i >= 0; i--) {
 			if (windowList.get(i).contains(newx, newy)
 					|| windowList.get(i).contains(oldx, oldy)) {
@@ -334,7 +334,7 @@ public class StateDesktop extends BasicGameState {
 	}
 
 	public void createNewPopup(String title, String content, ErrorType type) {
-		popup.add(new AppPopupMessage(title, content, type));
+		popup.add(new AppPopupMessage(this, title, content, type));
 	}
 
 	public void createNewWindow(int width, int height, Class<? extends AppWindow> c)
@@ -345,12 +345,12 @@ public class StateDesktop extends BasicGameState {
 		int y = 720 / 2 - height / 2;
 		// AppWindow wa = new AppSquareRotator(x, y, 800, 600);
 		AppWindow wa = c.getConstructor(new Class<?>[] {
+		        StateDesktop.class,
 				float.class,
 				float.class,
 				float.class,
 				float.class
-		}).newInstance(x, y, width, height);
-		wa.setDesktop(this);
+		}).newInstance(this, x, y, width, height);
 		windowList.add(wa);
 		TaskbarApp t = new TaskbarApp(110, wa, taskbarAppOrder.size());
 		guiComponents.add(t);
@@ -419,7 +419,7 @@ public class StateDesktop extends BasicGameState {
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 		super.mouseMoved(oldx, oldy, newx, newy);
-		windowList.forEach(e -> e.setMousePos(newx, newy));
+		windowList.forEach(e -> e.updateLocalMousePos(newx, newy));
 	}
 
 	@Override

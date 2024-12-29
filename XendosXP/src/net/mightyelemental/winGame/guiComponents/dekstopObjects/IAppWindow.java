@@ -60,4 +60,16 @@ public interface IAppWindow extends Runnable {
      */
     public TaskbarApp getTaskbarItem();
 
+    public float getX();
+
+    public float getY();
+
+    /** Get the width of the application window */
+    public float getWidth();
+
+    /** Get the height of the application window */
+    public float getHeight();
+
+    public boolean contains(float x, float y);
+
 }

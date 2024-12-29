@@ -12,6 +12,7 @@ import net.mightyelemental.winGame.guiComponents.GUIComponent;
 import net.mightyelemental.winGame.guiComponents.GUIEntryPanel;
 import net.mightyelemental.winGame.guiComponents.GUIPanel;
 import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
+import net.mightyelemental.winGame.states.StateDesktop;
 
 /**
  * XendosXP - A custom operating system that runs in a window Copyright (C) 2018
@@ -31,8 +32,6 @@ import net.mightyelemental.winGame.guiComponents.dekstopObjects.AppWindow;
  */
 public class AppCalculator extends AppWindow {
 
-	private static final long serialVersionUID = 6922927509542762105L;
-
 	GUIEntryPanel entryPan = new GUIEntryPanel(390 - 2, 200, "#display", this);
 
 	private double previousAnswer;
@@ -40,8 +39,8 @@ public class AppCalculator extends AppWindow {
 	public static ScriptEngineManager	manager	= new ScriptEngineManager();
 	public static ScriptEngine			engine	= manager.getEngineByName("js");
 
-	public AppCalculator(float x, float y, float width, float height) {
-		super(x, y, 400, 600, "Calculator");
+	public AppCalculator(StateDesktop context, float x, float y, float width, float height) {
+		super(context, x, y, 400, 600, "Calculator");
 		GUIPanel p = new GUIPanel(400 - 12, 600 - 260, this).setGridLayout(4, 5).setColor(Color.gray);
 		// this.addGUIObject(new GUIButton(190, 20, "#x", this).setText("EXE"), 5, 210);
 		GUIComponent[] g = { new GUIButton(0, 0, "#-", this).setText("-"), new GUIButton(0, 0, "#*", this).setText("x"),

@@ -29,15 +29,16 @@ import net.mightyelemental.winGame.states.StateDesktop;
  * You should have received a copy of the GNU General Public License along with this program. If not, see
  * <http://www.gnu.org/licenses/>.
  */
-public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
+public abstract class AppWindow implements IAppWindow {
 
-    private static final long serialVersionUID = 7927540239377397391L;
-
-    /** Size of the window */
-    private float height, width;
+//    /** Size of the window */
+//    private float height, width;
 
     /** Thread that runs the update method within the program */
     private Thread programThread = new Thread(this);
+
+    /** The object to be drawn on screen */
+    private RoundedRectangle windowGeometry;
 
     /** The taskbar entry that is linked to the program */
     private TaskbarApp linkedTaskbarApp;
@@ -85,8 +86,8 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
      * @param width of the program
      * @param height of the program
      */
-    public AppWindow(float x, float y, float width, float height) {
-        this(x, y, width, height, "Application");
+    public AppWindow(StateDesktop context, float x, float y, float width, float height) {
+        this(context, x, y, width, height, "Application");
     }
 
     /**
@@ -98,12 +99,11 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
      * @param height of the program
      * @param title of the program
      */
-    protected AppWindow(float x, float y, float width, float height, String title) {
-        super(x, y, width, height, 3);
-        this.height = height;
-        this.width = width;
+    protected AppWindow(StateDesktop context, float x, float y, float width, float height, String title) {
+        windowGeometry = new RoundedRectangle(x, y, width, height, 3);
         this.displayTitle = title;
         this.baseTitle = title;
+        this.desktop = context;
         try {
             content = new Image((int) (width - 4), (int) height - 28);
             contentGraphics = content.getGraphics();
@@ -117,16 +117,22 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
         programThread.start();
     }
 
+    /**
+     * Currently unused, but may be used in future to switch virtual desktops.
+     * 
+     * @deprecated as the desktop context is now part of the contructor.
+     */
+    @Deprecated
     public void setDesktop(StateDesktop desk) {
         desktop = desk;
     }
 
     /**
-     * calculate fps
+     * Get the FPS as a string in parentheses
      * 
-     * @return fps of the program as string
+     * @return The FPS
      */
-    private String getFPSText() {
+    private String getFpsText() {
         return String.format("(%.1f fps)", getFps());
     }
 
@@ -157,20 +163,20 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
         }
         // Draw generic program window. Gray background with black border
         g.setColor(Color.lightGray);
-        g.fill(this);
+        g.fill(windowGeometry);
         g.setColor(Color.black);
-        g.draw(this);
+        g.draw(windowGeometry);
         g.setColor(new Color(30, 79, 178));
-        g.fillRoundRect(x, y, super.getWidth() - 2, 25, 3);
+        g.fillRoundRect(getX(), getY(), getWidth() - 2, 25, 3);
 
         // g.setColor(Color.black);//draw border
         // g.drawRoundRect(x - 1, y, super.getWidth() - 0.5f, 20, 3);
 
         g.setColor(new Color(30, 79, 178));
-        g.fillRect(x, y + 10, super.getWidth() - 2, 15);
-        windowButtons.draw(x + super.getWidth() - 85, y + 2);
+        g.fillRect(getX(), getY() + 10, getWidth() - 2, 15);
+        windowButtons.draw(getX() + getWidth() - 85, getY() + 2);
         g.setColor(Color.white);
-        g.drawString(displayTitle, x + 15, y + 22 / 2f - g.getFont().getHeight(displayTitle) / 2f);
+        g.drawString(displayTitle, getX() + 15, getY() + 22 / 2f - g.getFont().getHeight(displayTitle) / 2f);
 
         // for ( int i = 0; i < menuButtons.size(); i++ ) {
         // g.draw(menuButtons.get(i));
@@ -208,10 +214,10 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
         }
 
         g.setColor(Color.gray);
-        float x = this.getX() * (1 - minimizeScale) + endX * minimizeScale;
-        float y = this.getY() + Math.abs((gc.getHeight() - this.getY()) * minimizeScale * minimizeScale);
-        float width = this.getWidth() * (1 - minimizeScale) + endWidth * minimizeScale;
-        float height = this.getHeight() * (1 - minimizeScale) + endHeight * minimizeScale;
+        float x = getX() * (1 - minimizeScale) + endX * minimizeScale;
+        float y = getY() + Math.abs((gc.getHeight() - getY()) * minimizeScale * minimizeScale);
+        float width = getWidth() * (1 - minimizeScale) + endWidth * minimizeScale;
+        float height = getHeight() * (1 - minimizeScale) + endHeight * minimizeScale;
         int rad = (int) (5 + 10 * (1 - minimizeScale));
         g.fillRoundRect(x, y, width, height, rad > 0 ? rad : 1);
         // }
@@ -273,7 +279,7 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
         if (tickCount % 100 == 0) {
             displayTitle = baseTitle;
             if (showFPS()) {
-                displayTitle = String.format("%s %s", baseTitle, getFPSText());
+                displayTitle = String.format("%s %s", baseTitle, getFpsText());
             }
             if (isNotResponding) {
                 displayTitle += " (Not Responding)";
@@ -335,14 +341,14 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
     }
 
     public final void changeXBy(float x) {
-        super.setX(super.getX() + x);
+        windowGeometry.setX(getX() + x);
         for (GUIButton c : menuButtons) {
             c.setX(c.getX() + x);
         }
     }
 
     public final void changeYBy(float y) {
-        super.setY(super.getY() + y);
+        windowGeometry.setY(getY() + y);
         for (GUIButton c : menuButtons) {
             c.setY(c.getY() + y);
         }
@@ -364,6 +370,10 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
         return canDrag;
     }
 
+    /**
+     * Invokes the appropriate {@link GUIComponent#onKeyPressed(int, char)} for the selected objects. Also invokes
+     * {@link AppWindow#onKeyPressed(int, char)}.
+     */
     public final void keyPressed(int key, char c) {
         for (GUIComponent g : guiObjects) {
             if (g.isSelected()) {
@@ -422,11 +432,11 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
     }
 
     public float getWindowHeight() {
-        return height;
+        return windowGeometry.getHeight();
     }
 
     public float getWindowWidth() {
-        return width;
+        return windowGeometry.getWidth();
     }
 
     public void setSleepTime(int mil) {
@@ -446,9 +456,40 @@ public abstract class AppWindow extends RoundedRectangle implements IAppWindow {
 
     }
 
-    public void setMousePos(int x, int y) {
-        this.mousex = (int) (x - this.getX() - 3);
-        this.mousey = (int) (y - this.getY() - 30);
+    @Override
+    public float getX() {
+        return windowGeometry.getX();
+    }
+
+    @Override
+    public float getY() {
+        return windowGeometry.getY();
+    }
+
+    @Override
+    public float getWidth() {
+        return windowGeometry.getWidth();
+    }
+
+    @Override
+    public float getHeight() {
+        return windowGeometry.getHeight();
+    }
+
+    @Override
+    public boolean contains(float globalX, float globalY) {
+        return windowGeometry.contains(globalX, globalY);
+    }
+
+    /**
+     * Converts the global mouse position into the mouse position relative to the window.
+     * 
+     * @param globalX
+     * @param globalY
+     */
+    public void updateLocalMousePos(int globalX, int globalY) {
+        this.mousex = (int) (globalX - this.getX() - 3);
+        this.mousey = (int) (globalY - this.getY() - 30);
     }
 
     public void mouseWheelMoved(int newValue) {
