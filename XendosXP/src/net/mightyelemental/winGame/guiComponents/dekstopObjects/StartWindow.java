@@ -55,7 +55,7 @@ public class StartWindow extends AppWindow {
 	}
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
 		// TODO Auto-generated method stub
 
 	}

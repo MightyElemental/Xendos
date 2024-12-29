@@ -69,12 +69,12 @@ public class AppCalculator extends AppWindow {
 	}
 
 	@Override
-	protected void drawContent(Graphics g, int width, int height) {
-		this.clearScreen();
+	public void drawContent(Graphics g, int width, int height) {
+		this.clearContent();
 	}
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
 		// TODO Auto-generated method stub
 
 	}

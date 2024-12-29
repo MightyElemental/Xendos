@@ -359,10 +359,10 @@ public class StateDesktop extends BasicGameState {
 
 	public void deleteWindow(AppWindow aw) {
 		windowList.remove(aw);
-		if (aw.getLinkedTaskbarApp() != null) {
-			taskbarAppOrder.remove(aw.getLinkedTaskbarApp().getUID());
+		if (aw.getTaskbarItem() != null) {
+			taskbarAppOrder.remove(aw.getTaskbarItem().getUID());
 			for (AppWindow a : windowList) {
-				TaskbarApp t = a.getLinkedTaskbarApp();
+				TaskbarApp t = a.getTaskbarItem();
 				t.setIndex(taskbarAppOrder.indexOf(t.getUID()));
 			}
 		}

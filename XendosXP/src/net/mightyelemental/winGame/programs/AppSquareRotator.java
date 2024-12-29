@@ -42,9 +42,9 @@ public class AppSquareRotator extends AppWindow {
 	}
 
 	@Override
-	protected void drawContent(Graphics g, int width, int height) {
+	public void drawContent(Graphics g, int width, int height) {
 		// g.setAntiAlias(true);
-		this.clearScreen();
+		this.clearContent();
 		g.setFont(OSSettings.NORMAL_FONT);
 		g.setColor(Color.black);
 		g.drawString("This should be in comic sans....", 20, 20);
@@ -68,7 +68,8 @@ public class AppSquareRotator extends AppWindow {
 	private boolean onGround;
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
+	    delta *= 1000;
 		if (Math.abs(delta - getSleepTime()) > 10)
 			return;
 		if (on[0] || on[2]) {

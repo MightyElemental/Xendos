@@ -58,6 +58,7 @@ public class TaskbarApp extends GUIButton {
 
 	public void drawText(GameContainer gc, StateBasedGame sbg, Graphics g) {
 		StringBuilder temp = new StringBuilder(linkedWindow.getTitle());
+		// TODO: Calculate once and store
 		boolean flag = false;
 		while (OSSettings.NORMAL_FONT.getWidth(temp.toString()) > this.getWidth()) {
 			if ( !flag ) {

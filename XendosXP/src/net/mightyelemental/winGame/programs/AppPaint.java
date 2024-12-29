@@ -65,14 +65,14 @@ public class AppPaint extends AppWindow {
 	}
 
 	@Override
-	protected void drawContent(Graphics g, int width, int height) {
+	public void drawContent(Graphics g, int width, int height) {
 		g.drawImage(drawArea, 0, 40);
 		g.setColor(Color.black);
 		g.drawOval(mousex - size / 2f, mousey - size / 2f, size, size);
 	}
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
 		if ( keyToggles.contains(Input.KEY_ADD) || keyToggles.contains(Input.KEY_EQUALS) ) {
 			size++;
 			if ( size < 2 ) size = 2;

@@ -31,13 +31,13 @@ public class AppPopupMessage extends AppWindow {
 	}
 
 	@Override
-	protected void drawContent(Graphics g, int width, int height) {
+	public void drawContent(Graphics g, int width, int height) {
 		g.setFont(OSSettings.NORMAL_FONT);
 		g.drawString(content, 0, 0);
 	}
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
 
 	}
 

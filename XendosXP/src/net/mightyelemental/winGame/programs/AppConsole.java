@@ -26,12 +26,12 @@ public class AppConsole extends AppWindow {
 	}
 
 	@Override
-	protected void drawContent(Graphics g, int width, int height) {
+	public void drawContent(Graphics g, int width, int height) {
 
 	}
 
 	@Override
-	public void updateContent(int delta) {
+	public void updateContent(float delta) {
 
 	}
 
